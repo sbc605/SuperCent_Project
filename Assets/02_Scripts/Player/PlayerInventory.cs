@@ -20,7 +20,10 @@ public class PlayerInventory : MonoBehaviour
         }
 
         CurrentStoneCount = Mathf.Min(CurrentStoneCount + amount, maxStoneCount);
+
+        Debug.Log($"[PlayerInventory] Stone Added: {CurrentStoneCount}/{maxStoneCount}");
         OnStoneChanged?.Invoke(CurrentStoneCount, maxStoneCount);
+
         return true;
     }
 

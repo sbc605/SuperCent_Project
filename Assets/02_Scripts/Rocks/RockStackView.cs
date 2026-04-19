@@ -1,9 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// 등 뒤에 돌이 쌓이는 연출
-/// </summary>
 public class RockStackView : MonoBehaviour
 {
     [SerializeField] private PlayerInventory inventory;
@@ -15,21 +12,31 @@ public class RockStackView : MonoBehaviour
 
     private void OnEnable()
     {
-        inventory.OnStoneChanged += RefreshView;
+        if (inventory != null)
+            inventory.OnStoneChanged += RefreshView;
     }
 
     private void OnDisable()
     {
-        inventory.OnStoneChanged -= RefreshView;
+        if (inventory != null)
+            inventory.OnStoneChanged -= RefreshView;
     }
 
     private void Start()
     {
+        if (inventory == null)
+        {
+            Debug.LogError("[RockStackView] inventory is null");
+            return;
+        }
+
         RefreshView(inventory.CurrentStoneCount, inventory.MaxStoneCount);
     }
 
     private void RefreshView(int current, int max)
     {
+        Debug.Log($"[RockStackView] RefreshView: {current}/{max}");
+
         while (spawnedStones.Count < current)
         {
             GameObject obj = Instantiate(stoneVisualPrefab, stackRoot);

@@ -3,27 +3,45 @@ using UnityEngine;
 
 public class RockNode : MonoBehaviour
 {
-    [SerializeField] private float respawnTime = 5f;
+    [SerializeField] private float respawnTime = 10f;
     [SerializeField] private GameObject visualRoot;
+    [SerializeField] private Collider rockCollider;
 
     private bool canMine = true;
 
     public bool CanMine => canMine;
 
+    private void Reset()
+    {
+        rockCollider = GetComponent<Collider>();
+        visualRoot = gameObject;
+    }
+
+
     public bool TryMine(PlayerInventory inventory)
     {
-        if (!canMine)
+        if (!canMine) return false;
+
+        if (inventory == null)
+        {
+            Debug.LogError("[RockNode] inventory is null");
             return false;
+        }
 
         if (!inventory.TryAddStone(1))
             return false;
 
-        StartCoroutine(CoRespawn());
         canMine = false;
 
         if (visualRoot != null)
             visualRoot.SetActive(false);
 
+        if (rockCollider != null)
+            rockCollider.enabled = false;
+
+        Debug.Log($"[RockNode] Mined: {name}");
+
+        StartCoroutine(CoRespawn());
         return true;
     }
 
@@ -35,5 +53,10 @@ public class RockNode : MonoBehaviour
 
         if (visualRoot != null)
             visualRoot.SetActive(true);
+
+        if (rockCollider != null)
+            rockCollider.enabled = true;
+
+        Debug.Log($"[RockNode] Respawn: {name}");
     }
 }

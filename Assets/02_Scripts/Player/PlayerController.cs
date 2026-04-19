@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,12 +16,20 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float turnSpeed = 10f;
     [SerializeField] private float gravity = -20f;
 
+    [Header("Mining Action")]
+    [SerializeField] private GameObject weaponObject;
+
     private float verticalVelocity;
+
+    private readonly int MoveHash = Animator.StringToHash("Move");
+    private readonly int DiggingHash = Animator.StringToHash("Digging");
+
 
     void Awake()
     {
         anim = GetComponent<Animator>();
         cc = GetComponent<CharacterController>();
+        weaponObject.SetActive(false);
     }
 
     private void Update()
@@ -60,18 +69,35 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateAnimation()
     {
-        float targetMove = moveInput.magnitude;
-        targetMove = Mathf.Clamp01(targetMove);
-
-        float currentMove = anim.GetFloat("Move");
+        float targetMove = Mathf.Clamp01(moveInput.magnitude);
+        float currentMove = anim.GetFloat(MoveHash);
         float smoothMove = Mathf.Lerp(currentMove, targetMove, 10f * Time.deltaTime);
 
-        anim.SetFloat("Move", smoothMove);
+        anim.SetFloat(MoveHash, smoothMove);
     }
 
     public void InputJoystick(Vector2 input)
     {
         moveInput = new Vector3(input.x, 0f, input.y);
+    }
+
+    public void PlayMineAction()
+    {
+        anim.SetTrigger(DiggingHash);
+    }
+
+    // Animation Event에서 호출
+    public void ShowWeapon()
+    {
+        if (weaponObject != null)
+            weaponObject.SetActive(true);
+    }
+
+    // Animation Event에서 호출
+    public void HideWeapon()
+    {
+        if (weaponObject != null)
+            weaponObject.SetActive(false);
     }
 }
 
