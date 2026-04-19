@@ -414,7 +414,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1c300cdc764c35c4d8305c8a8d9e8413, type: 2}
+  - {fileID: 2100000, guid: 82ee73e659f76eb4092f8094246b04f7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -783,6 +783,7 @@ GameObject:
   - component: {fileID: 989381317}
   - component: {fileID: 989381316}
   - component: {fileID: 989381319}
+  - component: {fileID: 989381320}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -857,13 +858,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 989381315}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.10355337, y: -0.60355335, z: 0.07945928, w: 0.78656614}
-  m_LocalPosition: {x: 6.46, y: 4, z: -3.63}
+  m_LocalRotation: {x: 0.3696438, y: -0.23911758, z: 0.099045746, w: 0.89239913}
+  m_LocalPosition: {x: 0, y: 10, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 15, y: -75, z: 0}
+  m_LocalEulerAnglesHint: {x: 45, y: -30, z: 0}
 --- !u!114 &989381319
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -908,6 +909,20 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!114 &989381320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 989381315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 493a6a918d2483247913b4d319988aef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 8149851020275831189}
+  smoothSpeed: 5
 --- !u!1 &1160544871
 GameObject:
   m_ObjectHideFlags: 0
@@ -934,7 +949,7 @@ Transform:
   m_GameObject: {fileID: 1160544871}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 10}
+  m_LocalPosition: {x: -5, y: 0, z: 20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -952,7 +967,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84166932a6e04354887505f8c37cf956, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fieldSize: {x: 10, y: 15}
+  fieldSize: {x: 8, y: 17}
   rockPrefab:
   - {fileID: 8933749797280981253, guid: 46e654c102087004988f6462e5ae7133, type: 3}
   - {fileID: 6173341499977504312, guid: 9cf4cca6be6d72b4191cec509848f6ac, type: 3}
@@ -4497,7 +4512,7 @@ Transform:
   m_GameObject: {fileID: 8590221225706403460}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -2.76}
+  m_LocalPosition: {x: -4, y: 0, z: 7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4813,8 +4828,8 @@ GameObject:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 989381318}
   - {fileID: 2046572419}
+  - {fileID: 989381318}
   - {fileID: 552349433}
   - {fileID: 8149851020275831189}
   - {fileID: 1163161755}
