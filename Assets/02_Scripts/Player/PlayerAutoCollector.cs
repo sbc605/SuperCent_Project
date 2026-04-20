@@ -20,7 +20,6 @@ public class PlayerAutoCollector : MonoBehaviour
             nearbyStones.Remove(target); // 자신이 닿은 바위 채굴하면 리스트에서 직접 제거
             if (playerController != null)
                 playerController.PlayMineAction();
-            Debug.Log($"[PlayerAutoCollector] Mine Success: {target.name}");
         }
     }
 
@@ -51,7 +50,6 @@ public class PlayerAutoCollector : MonoBehaviour
         if (stone != null && !nearbyStones.Contains(stone))
         {
             nearbyStones.Add(stone);
-            Debug.Log($"[PlayerAutoCollector] Enter: {stone.name}");
         }
     }
 
@@ -76,7 +74,6 @@ public class PlayerAutoCollector : MonoBehaviour
         if (stone != null)
         {
             nearbyStones.Remove(stone);
-            Debug.Log($"[PlayerAutoCollector] Exit: {stone.name}");
         }
     }
 }

@@ -11,8 +11,8 @@ public class WorkbenchStackView : MonoBehaviour
 {
     public enum LayoutType
     {
-        TwoPerLayer,     // 돌용
-        VerticalSingle   // 수갑용
+        TwoPerLayer,     // 돌, 돈
+        VerticalSingle   // 수갑
     }
 
     [SerializeField] private Transform root;
@@ -73,28 +73,28 @@ public class WorkbenchStackView : MonoBehaviour
 
     private void RefreshLayout()
     {
+        items.RemoveAll(x => x == null);
+
         for (int i = 0; i < items.Count; i++)
         {
+            if (items[i] == null) continue;
+
             switch (layoutType)
             {
                 case LayoutType.TwoPerLayer:
-                    {
-                        int layer = i / 2;
-                        int indexInLayer = i % 2;
+                    int layer = i / 2;
+                    int indexInLayer = i % 2;
 
-                        float y = layer * yOffset;
-                        float z = (indexInLayer == 0) ? -xSpacing * 0.5f : xSpacing * 0.5f;
+                    float y = layer * yOffset;
+                    float z = (indexInLayer == 0) ? -xSpacing * 0.5f : xSpacing * 0.5f;
 
-                        items[i].transform.localPosition = new Vector3(0f, y, z);
-                        break;
-                    }
+                    items[i].transform.localPosition = new Vector3(0f, y, z);
+                    break;
 
                 case LayoutType.VerticalSingle:
-                    {
-                        float y = i * yOffset;
-                        items[i].transform.localPosition = new Vector3(0f, y, 0f);
-                        break;
-                    }
+                    float y2 = i * yOffset;
+                    items[i].transform.localPosition = new Vector3(0f, y2, 0f);
+                    break;
             }
 
             items[i].transform.localRotation = Quaternion.identity;

@@ -9,6 +9,7 @@ using UnityEngine;
 public class HandcuffNode : MonoBehaviour
 {
     private WorkbenchStackView owner;
+    private bool isPicked = false;
 
     /// <summary>
     /// 수갑이 List로 관리되므로 Destroy 때 재정렬 필요
@@ -20,12 +21,16 @@ public class HandcuffNode : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (isPicked) return;
+
         PlayerInventory inventory = other.GetComponentInParent<PlayerInventory>();
         if (inventory == null)
             return;
 
         if (inventory.TryAddHandcuff(1))
         {
+            isPicked = true;
+            
             if (owner != null)
                 owner.RemoveItem(gameObject);
             else

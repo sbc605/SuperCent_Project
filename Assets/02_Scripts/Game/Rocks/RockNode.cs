@@ -26,10 +26,7 @@ public class RockNode : MonoBehaviour
         if (!canMine) return false;
 
         if (inventory == null)
-        {
-            Debug.LogError("[RockNode] inventory is null");
             return false;
-        }
 
         if (!inventory.TryAddStone(1))
             return false;
@@ -41,8 +38,6 @@ public class RockNode : MonoBehaviour
 
         if (rockCollider != null)
             rockCollider.enabled = false;
-
-        Debug.Log($"[RockNode] Mined: {name}");
 
         StartCoroutine(CoRespawn());
         return true;
@@ -59,7 +54,5 @@ public class RockNode : MonoBehaviour
 
         if (rockCollider != null)
             rockCollider.enabled = true;
-
-        Debug.Log($"[RockNode] Respawn: {name}");
     }
 }

@@ -21,6 +21,8 @@ public class WorkbenchZone : MonoBehaviour
     private Coroutine dropRoutine;
     private Coroutine craftRoutine;
 
+    private int stoneStock;
+
     private void Start()
     {
         if (craftRoutine == null)
@@ -60,7 +62,8 @@ public class WorkbenchZone : MonoBehaviour
         {
             if (currentPlayer.TryRemoveStone(1))
             {
-                stoneView.AddItem();
+                stoneStock++;            // 실제 재고 증가
+                stoneView.AddItem();     // 시각 표현
             }
 
             yield return new WaitForSeconds(dropInterval);
@@ -73,15 +76,16 @@ public class WorkbenchZone : MonoBehaviour
     {
         while (true)
         {
-            if (stoneView.Count > 0)
+            if (stoneStock > 0) // 인벤토리 재고 사용
             {
+                stoneStock --;
+
                 bool removed = stoneView.RemoveFirst();
 
                 if (removed)
                 {
                     GameObject obj = handcuffView.AddItem();
                     HandcuffNode pickup = obj.GetComponent<HandcuffNode>();
-
                     if (pickup != null)
                         pickup.SetOwner(handcuffView);
                 }

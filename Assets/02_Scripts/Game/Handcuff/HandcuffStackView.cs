@@ -36,6 +36,10 @@ public class HandcuffStackView : MonoBehaviour
 
     private void RefreshView(int current, int max)
     {
+        Debug.Log($"[HandcuffStackView] RefreshView: {current}/{max}");
+
+        spawnedItems.RemoveAll(x => x == null);
+
         while (spawnedItems.Count < current)
         {
             GameObject obj = Instantiate(handcuffVisualPrefab, stackRoot);
@@ -51,7 +55,9 @@ public class HandcuffStackView : MonoBehaviour
 
         for (int i = 0; i < spawnedItems.Count; i++)
         {
-            spawnedItems[i].transform.localPosition = new Vector3(0f, i * yOffset, 0f);
+            if (spawnedItems[i] == null) continue;
+            float baseY = (current - 1) * yOffset;
+            spawnedItems[i].transform.localPosition = new Vector3(0f, baseY - i * yOffset, 0f);
             spawnedItems[i].transform.localRotation = Quaternion.identity;
         }
     }

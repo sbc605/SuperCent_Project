@@ -36,8 +36,6 @@ public class RockStackView : MonoBehaviour
 
     private void RefreshView(int current, int max)
     {
-        Debug.Log($"[RockStackView] RefreshView: {current}/{max}");
-
         while (spawnedStones.Count < current)
         {
             GameObject obj = Instantiate(stoneVisualPrefab, stackRoot);

@@ -6,11 +6,12 @@ public class PlayerInventory : MonoBehaviour
     [Header("Capacity")]
     [SerializeField] private int maxStoneCount = 10;
     [SerializeField] private int maxHandcuffCount = 10;
-    [SerializeField] private int maxMoneyCount = 100;
+    [SerializeField] private int maxMoneyCount = 10;
 
     public int CurrentStoneCount { get; private set; }
     public int CurrentHandcuffCount { get; private set; }
-    public int CurrentMoneyCount { get; private set; }
+    public int CurrentMoneyStackCount { get; private set; } // 돈 프리팹 개수
+    public int TotalMoney { get; private set; } // 실제 총액
 
     public int MaxStoneCount => maxStoneCount;
     public int MaxHandcuffCount => maxHandcuffCount;
@@ -18,7 +19,8 @@ public class PlayerInventory : MonoBehaviour
 
     public event Action<int, int> OnStoneChanged;
     public event Action<int, int> OnHandcuffChanged;
-    public event Action<int, int> OnMoneyChanged;
+    public event Action<int, int> OnMoneyStackChanged;
+    public event Action<int> OnMoneyValueChanged;
 
     public event Action OnStoneMax;
     public event Action OnHandcuffMax;
@@ -89,35 +91,34 @@ public class PlayerInventory : MonoBehaviour
     }
     #endregion
 
-    #region 돈    
-    public bool TryAddMoney(int amount = 1)
+    #region 돈
+    public bool TryAddMoney(int stackAmount = 1)
     {
-        if (CurrentMoneyCount >= maxMoneyCount)
+        if (CurrentMoneyStackCount >= maxMoneyCount)
         {
             OnMoneyMax?.Invoke();
             return false;
         }
 
-        CurrentMoneyCount = Mathf.Min(CurrentMoneyCount + amount, maxMoneyCount);
-        OnMoneyChanged?.Invoke(CurrentMoneyCount, maxMoneyCount);
+        CurrentMoneyStackCount = Mathf.Min(CurrentMoneyStackCount + stackAmount, maxMoneyCount);
+        OnMoneyStackChanged?.Invoke(CurrentMoneyStackCount, maxMoneyCount);
         return true;
     }
 
-    public bool TrySpendMoney(int amount)
+    public bool TryRemoveMoneyStack(int amount = 1)
     {
-        if (CurrentMoneyCount < amount)
+        if (CurrentMoneyStackCount < amount)
             return false;
 
-        CurrentMoneyCount -= amount;
-        OnMoneyChanged?.Invoke(CurrentMoneyCount, maxMoneyCount);
+        CurrentMoneyStackCount -= amount;
+        OnMoneyStackChanged?.Invoke(CurrentMoneyStackCount, maxMoneyCount);
         return true;
     }
 
-    public void SetMaxMoneyCount(int value)
+    public void AddMoneyValue(int value)
     {
-        maxMoneyCount = value;
-        CurrentMoneyCount = Mathf.Min(CurrentMoneyCount, maxMoneyCount);
-        OnMoneyChanged?.Invoke(CurrentMoneyCount, maxMoneyCount);
+        TotalMoney += value;
+        OnMoneyValueChanged?.Invoke(TotalMoney);
     }
     #endregion
 }

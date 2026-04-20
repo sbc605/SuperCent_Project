@@ -7,7 +7,7 @@ public class PoolManager : GenericSingleton<PoolManager>
     public Dictionary<string, ObjectPool<GameObject>> pools = new();
 
     [Header("Pool Prefabs")]
-    public GameObject[] rockPrefabs;
+    public GameObject[] poolPrefabs;
 
     [Header("Pool Root")]
     [SerializeField] private Transform poolRoot;
@@ -19,7 +19,7 @@ public class PoolManager : GenericSingleton<PoolManager>
     {
         base.Awake();
 
-        foreach (GameObject prefab in rockPrefabs)
+        foreach (GameObject prefab in poolPrefabs)
         {
             ObjectPool<GameObject> newPool = new ObjectPool<GameObject>(() => CreateObject(prefab), GetObject, ReleaseObject, maxSize: maxPoolSize);
 
