@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -23,6 +24,8 @@ public class PlayerController : MonoBehaviour
     private readonly int MoveHash = Animator.StringToHash("Move");
     private readonly int DiggingHash = Animator.StringToHash("Digging");
 
+    public event Action OnFirstMoveInput;
+    private bool hasMovedOnce;
 
     void Awake()
     {
@@ -78,6 +81,12 @@ public class PlayerController : MonoBehaviour
     public void InputJoystick(Vector2 input)
     {
         moveInput = new Vector3(input.x, 0f, input.y);
+
+        if (!hasMovedOnce && input.sqrMagnitude > 0.01f)
+        {
+            hasMovedOnce = true;
+            OnFirstMoveInput?.Invoke();
+        }
     }
 
     public void PlayMineAction()
