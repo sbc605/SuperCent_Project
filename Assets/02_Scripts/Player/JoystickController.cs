@@ -6,26 +6,68 @@ using UnityEngine.EventSystems;
 /// </summary>
 public class JoystickController : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
+    [Header("Target")]
     [SerializeField] private PlayerController playerController;
+
+    [Header("Joystick")]
     [SerializeField] private float maxRadius = 75f;
 
     [Header("UI")]
+    [SerializeField] private GameObject idleGuideRoot;
+    [SerializeField] private GameObject joystickRoot;
     [SerializeField] private RectTransform backgroundUI;
     [SerializeField] private RectTransform handlerUI;
 
     private Vector2 startPos;
     private bool isDragging;
+    private bool isJoystickActivated;
 
     void Start()
     {
-        handlerUI.anchoredPosition = Vector2.zero;
+        SetIdleMode();
+
+        if (handlerUI != null)
+            handlerUI.anchoredPosition = Vector2.zero;
+    }
+
+    private void SetIdleMode()
+    {
+        isJoystickActivated = false;
+
+        if (idleGuideRoot != null)
+            idleGuideRoot.SetActive(true);
+
+        if (joystickRoot != null)
+            joystickRoot.SetActive(false);
+
+        if (handlerUI != null)
+            handlerUI.anchoredPosition = Vector2.zero;
+
+        if (playerController != null)
+            playerController.InputJoystick(Vector2.zero);
+    }
+
+    private void SetJoystickMode()
+    {
+        isJoystickActivated = true;
+
+        if (idleGuideRoot != null)
+            idleGuideRoot.SetActive(false);
+
+        if (joystickRoot != null)
+            joystickRoot.SetActive(true);
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (!isJoystickActivated)
+            SetJoystickMode();
+
         startPos = eventData.position;
         isDragging = true;
+
         handlerUI.position = Vector2.zero; // 배경 위치는 고정, 핸들만 중앙으로 초기화
+        playerController.InputJoystick(Vector2.zero);
     }
 
     public void OnDrag(PointerEventData eventData)
