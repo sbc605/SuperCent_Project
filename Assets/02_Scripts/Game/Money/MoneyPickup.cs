@@ -10,6 +10,7 @@ public class MoneyPickup : MonoBehaviour
 {
     [SerializeField] private int amount = 10;
     private WorkbenchStackView owner;
+    private bool canPickup = false;
 
     public void SetAmount(int value)
     {
@@ -21,8 +22,16 @@ public class MoneyPickup : MonoBehaviour
         owner = stackView;
     }
 
+    public void SetPickupEnabled(bool value)
+    {
+        canPickup = value;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
+        if (!canPickup)
+            return;
+
         PlayerInventory inventory = other.GetComponentInParent<PlayerInventory>();
         if (inventory == null)
             return;

@@ -13,13 +13,17 @@ public class PrisonerQueueManager : MonoBehaviour
     [SerializeField] private Transform orderPoint;
     [SerializeField] private Transform exitPoint;
 
+    [Header("Money")]
+    [SerializeField] private Transform moneySpawnPoint;
+    [SerializeField] private MoneyStackManager moneyStackManager;
+
     [SerializeField] private PrisonerSpawner spawner;
 
     private PrisonerController waitingPrisoner;
     private PrisonerController currentPrisoner;
 
-    [SerializeField] private Transform moneySpawnPoint;
     public Transform MoneySpawnPoint => moneySpawnPoint;
+    public MoneyStackManager MoneyStackManager => moneyStackManager;
 
     private void Start()
     {
@@ -29,10 +33,12 @@ public class PrisonerQueueManager : MonoBehaviour
     private void SpawnInitial()
     {
         currentPrisoner = spawner.SpawnPrisoner();
-        currentPrisoner.Initialize(this, exitPoint, orderPoint);
+        if (currentPrisoner != null)
+            currentPrisoner.Initialize(this, exitPoint, orderPoint);
 
         waitingPrisoner = spawner.SpawnPrisoner();
-        waitingPrisoner.Initialize(this, exitPoint, waitingPoint);
+        if (waitingPrisoner != null)
+            waitingPrisoner.Initialize(this, exitPoint, waitingPoint);
     }
 
     /// <summary>
@@ -93,11 +99,7 @@ public class PrisonerQueueManager : MonoBehaviour
 
     private void MoveToExitArea(PrisonerController prisoner)
     {
-        Vector3 offset = new Vector3(
-            Random.Range(-2f, 2f),
-            0f,
-            Random.Range(-2f, 2f)
-        );
+        Vector3 offset = new Vector3(Random.Range(-2f, 2f), 0f, Random.Range(-2f, 2f));
 
         prisoner.MoveTo(exitPoint.position + offset);
     }

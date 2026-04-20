@@ -26,6 +26,7 @@ public class WorkbenchStackView : MonoBehaviour
     private readonly List<GameObject> items = new();
 
     public int Count => items.Count;
+    public Transform Root => root;
 
     public GameObject AddItem()
     {
@@ -33,6 +34,16 @@ public class WorkbenchStackView : MonoBehaviour
         items.Add(obj);
         RefreshLayout();
         return obj;
+    }
+
+    public void AddExistingItem(GameObject obj)
+    {
+        if (obj == null)
+            return;
+
+        obj.transform.SetParent(root);
+        items.Add(obj);
+        RefreshLayout();
     }
 
     public bool RemoveFirst()
@@ -82,19 +93,23 @@ public class WorkbenchStackView : MonoBehaviour
             switch (layoutType)
             {
                 case LayoutType.TwoPerLayer:
-                    int layer = i / 2;
-                    int indexInLayer = i % 2;
+                    {
+                        int layer = i / 2;
+                        int indexInLayer = i % 2;
 
-                    float y = layer * yOffset;
-                    float z = (indexInLayer == 0) ? -xSpacing * 0.5f : xSpacing * 0.5f;
+                        float y = layer * yOffset;
+                        float z = (indexInLayer == 0) ? -xSpacing * 0.5f : xSpacing * 0.5f;
 
-                    items[i].transform.localPosition = new Vector3(0f, y, z);
-                    break;
+                        items[i].transform.localPosition = new Vector3(0f, y, z);
+                        break;
+                    }
 
                 case LayoutType.VerticalSingle:
-                    float y2 = i * yOffset;
-                    items[i].transform.localPosition = new Vector3(0f, y2, 0f);
-                    break;
+                    {
+                        float y2 = i * yOffset;
+                        items[i].transform.localPosition = new Vector3(0f, y2, 0f);
+                        break;
+                    }
             }
 
             items[i].transform.localRotation = Quaternion.identity;

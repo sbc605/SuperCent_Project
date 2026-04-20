@@ -11,22 +11,45 @@ public class PrisonerController : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 2f;
 
+    [Header("외형 변경")]
+    [SerializeField] private GameObject normalVisual;
+    [SerializeField] private GameObject handcuffedVisual;
+
     private PrisonerQueueManager queueManager;
     private Transform exitPoint;
     private Transform targetPoint;
 
     private bool isLeaving;
 
+    void Start()
+    {
+        normalVisual.SetActive(true);
+        handcuffedVisual.SetActive(false);
+    }
+
     private void Update()
+    {
+        Move();
+    }
+
+    public void Initialize(PrisonerQueueManager manager, Transform exit, Transform queuePoint)
+    {
+        queueManager = manager;
+        exitPoint = exit;
+        targetPoint = queuePoint;
+        isLeaving = false;
+
+        var order = GetComponent<PrisonerOrder>();
+        if (order != null)
+            order.Initialize(manager, manager.MoneySpawnPoint, manager.MoneyStackManager);
+    }
+
+    private void Move()
     {
         if (targetPoint == null)
             return;
 
-        transform.position = Vector3.MoveTowards(
-            transform.position,
-            targetPoint.position,
-            moveSpeed * Time.deltaTime
-        );
+        transform.position = Vector3.MoveTowards(transform.position, targetPoint.position, moveSpeed * Time.deltaTime);
 
         Vector3 dir = targetPoint.position - transform.position;
         dir.y = 0f;
@@ -47,18 +70,6 @@ public class PrisonerController : MonoBehaviour
             isLeaving = false;
             queueManager.ReleasePrisoner(this);
         }
-    }
-
-    public void Initialize(PrisonerQueueManager manager, Transform exit, Transform queuePoint)
-    {
-        queueManager = manager;
-        exitPoint = exit;
-        targetPoint = queuePoint;
-        isLeaving = false;
-
-        var order = GetComponent<PrisonerOrder>();
-        if (order != null)
-            order.Initialize(manager, manager.MoneySpawnPoint);
     }
 
     public void SetQueuePoint(Transform point)
@@ -92,6 +103,15 @@ public class PrisonerController : MonoBehaviour
             );
             yield return null;
         }
+    }
+
+    public void OnHandcuffReceived()
+    {
+        if (normalVisual != null)
+            normalVisual.SetActive(false);
+
+        if (handcuffedVisual != null)
+            handcuffedVisual.SetActive(true);
     }
 }
 

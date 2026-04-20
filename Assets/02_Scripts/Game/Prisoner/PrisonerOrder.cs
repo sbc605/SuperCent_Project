@@ -11,32 +11,33 @@ public class PrisonerOrder : MonoBehaviour
     [SerializeField] private int minNeed = 1;
     [SerializeField] private int maxNeed = 5;
 
-    private MoneyStackManager moneyManager;
-    [SerializeField] private GameObject moneyPrefab;
     [SerializeField] private int rewardMoney = 10;
 
-    private PrisonerController prisoner;
+    [Header("UI")]
+    [SerializeField] private PrisonerOrderUI orderUI;
+
     private Transform moneySpawnPoint;
+    private MoneyStackManager moneyStackManager;
+
+    private PrisonerController prisoner;
     private PrisonerQueueManager manager;
 
     public int RequiredCount { get; private set; }
     public int CurrentCount { get; private set; }
     public bool IsCompleted { get; private set; }
 
-    private void Start()
+    public int RemainCount => Mathf.Max(RequiredCount - CurrentCount, 0);
+
+    private void Awake()
     {
         prisoner = GetComponent<PrisonerController>();
-        moneyManager = FindFirstObjectByType<MoneyStackManager>();
     }
 
-    public void Initialize(PrisonerQueueManager queueManager, Transform spawnPoint)
+    public void Initialize(PrisonerQueueManager queueManager, Transform spawnPoint, MoneyStackManager stackManager)
     {
         manager = queueManager;
         moneySpawnPoint = spawnPoint;
-    }
-
-    private void OnEnable()
-    {
+        moneyStackManager = stackManager;
         ResetOrder();
     }
 
@@ -46,6 +47,7 @@ public class PrisonerOrder : MonoBehaviour
         CurrentCount = 0;
         IsCompleted = false;
 
+        RefreshUI();
         Debug.Log($"[PrisonerOrder] Need: {RequiredCount}");
     }
 
@@ -55,6 +57,7 @@ public class PrisonerOrder : MonoBehaviour
             return false;
 
         CurrentCount++;
+        RefreshUI();
 
         Debug.Log($"[PrisonerOrder] Delivered: {CurrentCount}/{RequiredCount}");
 
@@ -69,15 +72,34 @@ public class PrisonerOrder : MonoBehaviour
     private void CompleteOrder()
     {
         IsCompleted = true;
+        RefreshUI();
 
-        if (moneyManager != null)
+        // 외형 변경
+        if (prisoner != null)
+            prisoner.OnHandcuffReceived();
+
+        if (moneyStackManager != null && moneySpawnPoint != null)
         {
-            moneyManager.SpawnMoney(rewardMoney);
+            moneyStackManager.SpawnMoney(rewardMoney, moneySpawnPoint);
         }
 
-        if (prisoner != null)
+        if (prisoner != null && manager != null)
         {
             manager.OnOrderComplete(prisoner);
         }
+    }
+
+    private void RefreshUI()
+    {
+        if (orderUI == null)
+            return;
+
+        if (IsCompleted)
+        {
+            orderUI.Hide();
+            return;
+        }
+
+        orderUI.Show(RemainCount, RequiredCount);
     }
 }
