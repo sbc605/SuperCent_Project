@@ -1,6 +1,9 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// 바위 프리팹에 붙여서 사용
+/// </summary>
 public class RockNode : MonoBehaviour
 {
     [SerializeField] private float respawnTime = 10f;
