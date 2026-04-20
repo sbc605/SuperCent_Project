@@ -16,8 +16,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float turnSpeed = 10f;
     [SerializeField] private float gravity = -20f;
 
-    [Header("Mining Action")]
-    [SerializeField] private GameObject weaponObject;
+    private PlayerWeapon playerWeapon;
 
     private float verticalVelocity;
 
@@ -29,7 +28,7 @@ public class PlayerController : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         cc = GetComponent<CharacterController>();
-        weaponObject.SetActive(false);
+        playerWeapon = GetComponent<PlayerWeapon>();
     }
 
     private void Update()
@@ -89,15 +88,15 @@ public class PlayerController : MonoBehaviour
     // Animation Event에서 호출
     public void ShowWeapon()
     {
-        if (weaponObject != null)
-            weaponObject.SetActive(true);
+        if (playerWeapon != null)
+            playerWeapon.ShowWeapon();
     }
 
     // Animation Event에서 호출
     public void HideWeapon()
     {
-        if (weaponObject != null)
-            weaponObject.SetActive(false);
+        if (playerWeapon != null)
+            playerWeapon.HideWeapon();
     }
 }
 
