@@ -10,7 +10,7 @@ public class PrisonerSpawner : MonoBehaviour
     [SerializeField] private PrisonerController prisonerPrefab;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private int startCount = 1;
-    [SerializeField] private int maxCount = 10;
+    [SerializeField] private int maxCount = 100;
 
     [SerializeField] private PrisonerQueueManager queueManager;
 

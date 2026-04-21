@@ -1099,7 +1099,7 @@ MonoBehaviour:
     type: 3}
   spawnPoint: {fileID: 1552948470}
   startCount: 1
-  maxCount: 10
+  maxCount: 100
   queueManager: {fileID: 426395801}
 --- !u!1 &387178666
 GameObject:
@@ -2347,7 +2347,6 @@ MonoBehaviour:
   smoothSpeed: 5
   focusMoveTime: 0.7
   focusStayTime: 0.8
-  focusOffset: {x: 0, y: 6, z: -6}
 --- !u!1 &1108078445
 GameObject:
   m_ObjectHideFlags: 0
