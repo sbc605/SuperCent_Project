@@ -91,6 +91,7 @@ public class PlayerController : MonoBehaviour
 
     public void PlayMineAction()
     {
+        Sfx.Play("mine_sound");
         anim.SetTrigger(DiggingHash);
     }
 
