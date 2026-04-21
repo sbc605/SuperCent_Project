@@ -36,16 +36,15 @@ public class MoneyPickup : MonoBehaviour
         if (inventory == null)
             return;
 
-        if (inventory.TryAddMoney(1)) // 묶음 1개
-        {
-            inventory.AddMoneyValue(amount); // 실제 돈 10
+        // 제한 없이 돈 추가
+        inventory.ForceAddMoneyStack(1);
+        inventory.AddMoneyValue(amount); // 실제 돈 10
 
-            Sfx.Play("money_sound");
+        Sfx.Play("money_sound");
 
-            if (owner != null)
-                owner.RemoveItem(gameObject);
-            else
-                Destroy(gameObject);
-        }
+        if (owner != null)
+            owner.RemoveItem(gameObject);
+        Destroy(gameObject);
+
     }
 }

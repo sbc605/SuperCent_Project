@@ -92,12 +92,21 @@ public class PlayerInventory : MonoBehaviour
         return true;
     }
 
-    public void SetMaxHandcuffCount(int value)
+    /// <summary>
+    /// 수갑: 최대 소지 제한을 무시하고 추가할 때 사용
+    /// </summary>
+    public void ForceAddHandcuff(int amount = 1)
     {
-        maxHandcuffCount = value;
-        CurrentHandcuffCount = Mathf.Min(CurrentHandcuffCount, maxHandcuffCount);
-        OnHandcuffChanged?.Invoke(CurrentHandcuffCount, maxHandcuffCount);
+        if (amount <= 0)
+            return;
+
+        CurrentHandcuffCount += amount;
+
+        // UI가 "현재 / 최대" 형태라면 max도 현재 수량 이상으로 보정
+        int displayMax = Mathf.Max(maxHandcuffCount, CurrentHandcuffCount);
+        OnHandcuffChanged?.Invoke(CurrentHandcuffCount, displayMax);
     }
+
     #endregion
 
     #region 돈
@@ -138,6 +147,28 @@ public class PlayerInventory : MonoBehaviour
     {
         TotalMoney += value;
         OnMoneyValueChanged?.Invoke(TotalMoney);
+    }
+
+    /// <summary>
+    /// 돈: 최대 소지 제한을 무시하고 돈 프리팹 개수를 추가할 때 사용
+    /// </summary>
+    public void ForceAddMoneyStack(int stackAmount = 1)
+    {
+        if (stackAmount <= 0)
+            return;
+
+        int before = CurrentMoneyStackCount;
+
+        CurrentMoneyStackCount += stackAmount;
+
+        int displayMax = Mathf.Max(maxMoneyCount, CurrentMoneyStackCount);
+        OnMoneyStackChanged?.Invoke(CurrentMoneyStackCount, displayMax);
+
+        if (!hasAddedMoneyOnce && before <= 0 && CurrentMoneyStackCount > 0)
+        {
+            hasAddedMoneyOnce = true;
+            OnFirstMoneyAdded?.Invoke();
+        }
     }
 
     /// <summary>

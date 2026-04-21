@@ -27,15 +27,16 @@ public class HandcuffNode : MonoBehaviour
         if (inventory == null)
             return;
 
-        if (inventory.TryAddHandcuff(1))
-        {
-            isPicked = true;
-            Sfx.Play("item_clip");
-            
-            if (owner != null)
-                owner.RemoveItem(gameObject);
-            else
-                Destroy(gameObject);
-        }
+        // 제한 없이 수갑 추가
+        inventory.ForceAddHandcuff(1);
+
+        isPicked = true;
+        Sfx.Play("item_clip");
+
+        if (owner != null)
+            owner.RemoveItem(gameObject);
+
+        Destroy(gameObject);
+
     }
 }
