@@ -156,6 +156,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 154665642}
+  - {fileID: 955961685}
   m_Father: {fileID: 387178667}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &47971115
@@ -1147,6 +1148,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerInventory: {fileID: 8590221225706403462}
   upgradeZone: {fileID: 47971113}
+  playerController: {fileID: 8590221225706403463}
+  cameraFocusTarget: {fileID: 955961685}
 --- !u!1 &391023914
 GameObject:
   m_ObjectHideFlags: 0
@@ -2159,6 +2162,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 856453945}
   m_CullTransparentMesh: 1
+--- !u!1 &955961684
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 955961685}
+  m_Layer: 0
+  m_Name: CameraFocusPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &955961685
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 955961684}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 47971114}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &989381315
 GameObject:
   m_ObjectHideFlags: 0
@@ -2311,6 +2345,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 8149851020275831189}
   smoothSpeed: 5
+  focusMoveTime: 0.7
+  focusStayTime: 0.8
+  focusOffset: {x: 0, y: 6, z: -6}
 --- !u!1 &1108078445
 GameObject:
   m_ObjectHideFlags: 0

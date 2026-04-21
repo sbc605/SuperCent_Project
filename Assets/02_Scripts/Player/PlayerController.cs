@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour
 
     public event Action OnFirstMoveInput;
     private bool hasMovedOnce;
+    private bool inputLocked;
 
     void Awake()
     {
@@ -80,6 +81,12 @@ public class PlayerController : MonoBehaviour
 
     public void InputJoystick(Vector2 input)
     {
+        if (inputLocked)
+        {
+            moveInput = Vector3.zero;
+            return;
+        }
+
         moveInput = new Vector3(input.x, 0f, input.y);
 
         if (!hasMovedOnce && input.sqrMagnitude > 0.01f)
@@ -107,6 +114,17 @@ public class PlayerController : MonoBehaviour
     {
         if (playerWeapon != null)
             playerWeapon.HideWeapon();
+    }
+
+    /// <summary>
+    /// 플레이어 움직임 잠금
+    /// </summary>
+    public void SetInputLocked(bool locked)
+    {
+        inputLocked = locked;
+
+        if (locked)
+            moveInput = Vector3.zero;
     }
 }
 
