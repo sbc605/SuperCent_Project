@@ -64,6 +64,7 @@ public class WorkbenchZone : MonoBehaviour
             {
                 stoneStock++;            // 실제 재고 증가
                 stoneView.AddItem();     // 시각 표현
+                Sfx.Play("item_clip");
             }
 
             yield return new WaitForSeconds(dropInterval);

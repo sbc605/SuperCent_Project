@@ -30,6 +30,7 @@ public class HandcuffNode : MonoBehaviour
         if (inventory.TryAddHandcuff(1))
         {
             isPicked = true;
+            Sfx.Play("item_clip");
             
             if (owner != null)
                 owner.RemoveItem(gameObject);

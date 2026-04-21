@@ -143,6 +143,7 @@ public class WeaponUpgradeZone : MonoBehaviour
                 break;
             }
 
+            Sfx.Play("item_clip");
             int payValue = Mathf.Min(payAmountPerTick, remainCost);
 
             bool paid = currentInventory.TrySpendMoneyValue(payValue);

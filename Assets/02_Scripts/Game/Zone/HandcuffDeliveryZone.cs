@@ -68,6 +68,7 @@ public class HandcuffDeliveryZone : MonoBehaviour
             bool removed = currentPlayer.TryRemoveHandcuff(1);
             if (removed)
             {
+                Sfx.Play("item_clip");
                 // 연출용 오브젝트 생성
                 GameObject obj = Instantiate(handcuffVisualPrefab, dropSpawnPoint.position, Quaternion.identity);
 

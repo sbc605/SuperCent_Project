@@ -40,6 +40,8 @@ public class MoneyPickup : MonoBehaviour
         {
             inventory.AddMoneyValue(amount); // 실제 돈 10
 
+            Sfx.Play("money_sound");
+
             if (owner != null)
                 owner.RemoveItem(gameObject);
             else

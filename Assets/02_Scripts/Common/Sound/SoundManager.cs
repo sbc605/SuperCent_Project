@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 실제 오디오 클립 로드
+/// AudioSource로 사운드 재생
+/// BGM / SFX 관리
+/// </summary>
 public class SoundManager : GenericSingleton<SoundManager>
 {
     public AudioSource BgmSource => bgmAudio;
