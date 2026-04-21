@@ -9,6 +9,8 @@ using UnityEngine;
 /// </summary>
 public class PrisonerController : MonoBehaviour
 {
+    private Animator anim;
+
     [SerializeField] private float moveSpeed = 2f;
 
     [Header("외형 변경")]
@@ -20,9 +22,14 @@ public class PrisonerController : MonoBehaviour
     private Transform targetPoint;
 
     private bool isLeaving;
+    private bool isMovingByCoroutine;
+
+    private readonly int MoveHash = Animator.StringToHash("Move");
+
 
     void Start()
     {
+        anim = GetComponent<Animator>();
         normalVisual.SetActive(true);
         handcuffedVisual.SetActive(false);
     }
@@ -30,6 +37,7 @@ public class PrisonerController : MonoBehaviour
     private void Update()
     {
         Move();
+        UpdateAnimation();
     }
 
     public void Initialize(PrisonerQueueManager manager, Transform exit, Transform queuePoint)
@@ -49,6 +57,7 @@ public class PrisonerController : MonoBehaviour
         if (targetPoint == null)
             return;
 
+        Vector3 beforePos = transform.position;
         transform.position = Vector3.MoveTowards(transform.position, targetPoint.position, moveSpeed * Time.deltaTime);
 
         Vector3 dir = targetPoint.position - transform.position;
@@ -94,15 +103,33 @@ public class PrisonerController : MonoBehaviour
 
     private IEnumerator CoMove(Vector3 pos)
     {
+        isMovingByCoroutine = true;
+
         while (Vector3.Distance(transform.position, pos) > 0.05f)
         {
+            Vector3 dir = pos - transform.position;
+            dir.y = 0f;
+
+            if (dir.sqrMagnitude > 0.001f)
+            {
+                Quaternion targetRot = Quaternion.LookRotation(dir);
+                transform.rotation = Quaternion.Slerp(
+                    transform.rotation,
+                    targetRot,
+                    10f * Time.deltaTime
+                );
+            }
+
             transform.position = Vector3.MoveTowards(
                 transform.position,
                 pos,
                 moveSpeed * Time.deltaTime
             );
+
             yield return null;
         }
+
+        isMovingByCoroutine = false;
     }
 
     public void OnHandcuffReceived()
@@ -112,6 +139,28 @@ public class PrisonerController : MonoBehaviour
 
         if (handcuffedVisual != null)
             handcuffedVisual.SetActive(true);
+    }
+
+    private void UpdateAnimation()
+    {
+        if (anim == null)
+            return;
+
+        bool isMovingToTarget = false;
+
+        if (targetPoint != null)
+        {
+            float distance = Vector3.Distance(transform.position, targetPoint.position);
+            isMovingToTarget = distance > 0.05f;
+        }
+
+        bool isMoving = isMovingToTarget || isMovingByCoroutine;
+
+        float targetMove = isMoving ? 1f : 0f;
+        float currentMove = anim.GetFloat(MoveHash);
+        float smoothMove = Mathf.Lerp(currentMove, targetMove, 10f * Time.deltaTime);
+
+        anim.SetFloat(MoveHash, smoothMove);
     }
 }
 
